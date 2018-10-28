@@ -11,14 +11,16 @@ public class PodizanjeKnjige extends Knjiga {
 	
 	public PodizanjeKnjige(int brojRacuna, int brojKnjige) {
 		
-			if(brojPodignutihKnjiga(brojRacuna) && provjeriValidnostKnjige(brojKnjige) && provjeriPostojanjeKnjige(brojKnjige) ) {
-				
+			if(brojPodignutihKnjiga(brojRacuna) && stanjeKnjige(brojKnjige)) {
+				Racun.posudba(brojRacuna);
+				Knjiga.preuzetaKnjiga(brojKnjige);
 				this.brojRacuna = brojRacuna;
 				this.brojKnjige = brojKnjige;
 				this.datum = new Date();
 				
 				listaIzdatihKnjiga.add(this);
 				System.out.println("Uspjesno ste iznajmili knjigu!");
+				System.out.println("Knjiga je preuzeta " + datum);
 			}
 			
 			else {
@@ -33,3 +35,9 @@ public class PodizanjeKnjige extends Knjiga {
 			
 	
 }
+	
+	
+	
+			
+	
+
