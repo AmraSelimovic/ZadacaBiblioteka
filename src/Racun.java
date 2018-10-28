@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Racun {
 
@@ -63,17 +62,43 @@ public class Racun {
 		    if(listaRacuna.get(i).brojRacuna==brojRacuna) {
 			listaRacuna.get(i).brojPosudjenihKnjiga++;
 		    }
-		    
 		}
 	    }
+	
 	    public static void vracanje(int brojRacuna) {
 	   	for (int i = 0; i < listaRacuna.size(); i++) {
-	   	    if(listaRacuna.get(i).brojRacuna==brojRacuna) {
+	   	    if(listaRacuna.get(i).brojRacuna==brojRacuna) 
 	   		listaRacuna.get(i).brojPosudjenihKnjiga--;
-	   	    }
+	   	    
 	   	    
 	   	}
 	       }
+
+		public int getBrojRacuna() {
+			return brojRacuna;
+		}
+
+		public void setBrojRacuna(int brojRacuna) {
+			this.brojRacuna = brojRacuna;
+		}
+
+		public String getImeMusterije() {
+			return imeMusterije;
+		}
+
+		public void setImeMusterije(String imeMusterije) {
+			this.imeMusterije = imeMusterije;
+		}
+
+		public int getBrojPosudjenihKnjiga() {
+			return brojPosudjenihKnjiga;
+		}
+
+		public void setBrojPosudjenihKnjiga(int brojPosudjenihKnjiga) {
+			this.brojPosudjenihKnjiga = brojPosudjenihKnjiga;
+		}
 	
 	
+	    
 }
+
