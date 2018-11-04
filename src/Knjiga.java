@@ -1,82 +1,122 @@
 import java.util.ArrayList;
-public class Knjiga extends Racun {
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
+public class Knjiga extends Racun implements Serializable{
+	
 	private int brojKnjige;
 	private String imeKnjige;
-	private boolean statusKnjige=true; //false-izdata, true-slobodna
-	
+	private boolean statusKnjige;
+	private int ukupanBrojKnjiga=0;
+	 private static File knjige;
 	protected static ArrayList <Knjiga> listaKnjiga = new ArrayList<Knjiga>();
 	
-	public Knjiga() {
-		
+	
+	public static void loading () {
+
+		try {
+			FileInputStream in = new FileInputStream("listaKnjiga.txt");
+			ObjectInputStream oin = new ObjectInputStream(in);
+
+			while (true) 
+				listaKnjiga.add((Knjiga)oin.readObject());
+
+		} catch (EOFException ex) {}
+		catch (FileNotFoundException e) {knjige = new File ("listaKnjiga.txt");}
+		catch (Exception e) {}
 	}
 	
-	public Knjiga(int brojKnjige, String imeKnjige) {
-		if(provjeriValidacijuKnjige(brojKnjige)) {
-			
-			this.brojKnjige = brojKnjige;
+	
+	// konstruktori
+	
+	public Knjiga() {
+		ukupanBrojKnjiga++;
+	}
+	
+	public Knjiga(int brojKnjige, String imeKnjige, boolean statusKnjige) {
+		
+		if(provjeraPostojanja(brojKnjige)) {
+			setBrojKnjige(brojKnjige);
+		
 			this.imeKnjige = imeKnjige;
+			this.statusKnjige = statusKnjige;
 			
 			listaKnjiga.add(this);
-			System.out.println("Knjiga je uspjesno dodana u bazu");
+
+			System.out.println("Knjiga je uspjesno kreirana!");
+			ukupanBrojKnjiga++;
+			
+		}
+	}
+	
+	private boolean provjeraPostojanja(int brojKnjige) {
+		
+		for (int i = 0; i < listaKnjiga.size(); i++)
+			if (listaKnjiga.get(i).brojKnjige == brojKnjige) {
+				System.out.println("Unijeti broj knjige vec postoji. Knjiga nije uspjesno kreirana!");
+				return false;
+			}
+		
+		return true;
+	}
+	
+	
+	
+	// geteri
+
+	public int getBrojKnjige() {
+		return brojKnjige;
+	}
+	
+	public String getImeKnjige() {
+		return imeKnjige;
+	}
+	
+	public boolean isStatusKnjige() {
+		return statusKnjige;
+	}
+
+	public static Knjiga getKnjiga(int brojKnjige) {
+		
+		int i = 0;
+		
+		for (i = 0; i < listaKnjiga.size(); i++)
+			if (listaKnjiga.get(i).brojKnjige == brojKnjige)
+				return listaKnjiga.get(i);
+		
+		return null;
+	}
+	
+	// seteri
+
+	public void setBrojKnjige(int brojKnjige) throws IllegalArgumentException {
+		if(brojKnjige >= 0) {
+			this.brojKnjige = brojKnjige;
 		}
 		else {
-			System.out.println("Knjiga se ne moze dodati u bazu! Provjerite uslove i pokusajte ponovo!");
+			throw new IllegalArgumentException ("Broj knjige ne moze biti negativan. Knjiga nije uspjesno kreirana!");
 		}
-	}
-	
-	
-	public boolean provjeriValidacijuKnjige ( int brojKnjige ) {
-		if(brojKnjige<0) {
-			System.out.println("Ne mozete dodati u bazu knjigu sa negativnim brojem!");
-			return false;
-		}
-		
-		for(int i=0; i<listaKnjiga.size(); i++) {
-			if(listaKnjiga.get(i).brojKnjige == brojKnjige) {
-				System.out.println("Knjiga sa ovim brojem vec postoji u bazi!");
-				return false;
-			}
-		}
-		
-		return true;
 	}
 
-	public static boolean stanjeKnjige(int brojKnjige) {
-		for (int i = 0; i < listaKnjiga.size(); i++) {
-		    if (listaKnjiga.get(i).brojKnjige == brojKnjige) {
-			if (listaKnjiga.get(i).statusKnjige) {
-			    return true;
-			}
-		    }
-		}
-		return false;
+	public void setImeKnjige(String imeKnjige) {
+		this.imeKnjige = imeKnjige;
 	}
 
 	
+	public void setStatusKnjige(boolean statusKnjige) {
+		this.statusKnjige = statusKnjige;
+	}
 	
-	public boolean provjeriValidnostKnjige(int brojKnjige) {
-		for(int i=0; i<listaKnjiga.size(); i++) {
-			if(!(listaKnjiga.get(i).statusKnjige)) {
-				System.out.println("Ova knjiga je vec izdata. Iznajmite neku drugu!");
-				return false;
-			}
-		}
-		return true;
-	}
-			
-	public static boolean provjeriPostojanjeKnjige(int brojKnjige) {
-		for(int i=0; i<listaKnjiga.size(); i++) {
-			if(listaKnjiga.get(i).brojKnjige != brojKnjige) {
-				System.out.println("Ova knjiga je nepostojeca (nema je u bazi)!");
-				return false;
-			}
-			else {
-				return true;
-			}
-		}
-		
-		return true;
-	}
+	
+	
+
+	
 	
 }
