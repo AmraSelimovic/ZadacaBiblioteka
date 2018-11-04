@@ -85,10 +85,10 @@ public static void main(String[] args) throws IOException {
 	
 		
 		int brojPodignutihKnjiga = 0;
-		try {
+		try { //handle exception za negativan broj racuna
 			Racun racun = new Racun(brojRacuna, ime, brojPodignutihKnjiga);
 			
-			try {
+			try { 
 				FileOutputStream in = new FileOutputStream("listaRacuna.txt");
 				ObjectOutputStream oin = new ObjectOutputStream(in);
 				oin.writeObject(racun);
@@ -98,7 +98,7 @@ public static void main(String[] args) throws IOException {
 			}
 			
 		}
-		catch (IllegalArgumentException ex){
+		catch (IllegalArgumentException ex){ 
 			System.out.println(ex);
 		}
 		
@@ -117,7 +117,7 @@ public static void main(String[] args) throws IOException {
 		
 		boolean stanjeKnjige = false;
 		
-		try {
+		try { // handle exception za negativan broj knjige
 			Knjiga knjiga = new Knjiga(brojKnjige, naziv, stanjeKnjige);
 			
 			try {
