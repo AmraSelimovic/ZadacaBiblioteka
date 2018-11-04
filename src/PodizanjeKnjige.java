@@ -18,6 +18,10 @@ public class PodizanjeKnjige extends Knjiga {
 			if(provjeraZaPodizanjeKnjige(brojRacuna, brojKnjige)) {
 				Knjiga.getKnjiga(brojKnjige).setStatusKnjige(true);
 				Racun.getRacun(brojRacuna).setBrojPosudjenihKnjiga(Racun.getRacun(brojRacuna).getBrojPosudjenihKnjiga()+1);
+
+			if(brojPodignutihKnjiga(brojRacuna) && stanjeKnjige(brojKnjige)) {
+				Racun.posudba(brojRacuna);
+				Knjiga.preuzetaKnjiga(brojKnjige);
 				this.brojRacuna = brojRacuna;
 				this.brojKnjige = brojKnjige;
 
@@ -30,6 +34,10 @@ public class PodizanjeKnjige extends Knjiga {
 				System.out.println("Broj racuna korisnika: " + brojRacuna);
 				System.out.println("Ime korisnika koji je preuzeo Knjigu: " + Racun.getRacun(brojRacuna).getImeMusterije());
 				System.out.println("Broj podignute knjige: " + brojKnjige);
+        
+				listaIzdatihKnjiga.add(this);
+				System.out.println("Uspjesno ste iznajmili knjigu!");
+				System.out.println("Knjiga je preuzeta " + datum);
 			}
 			
 			else {
@@ -91,3 +99,9 @@ public class PodizanjeKnjige extends Knjiga {
 		
 	}
 }
+	
+	
+	
+			
+	
+
