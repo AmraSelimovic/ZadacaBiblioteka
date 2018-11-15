@@ -91,6 +91,7 @@ public static void main(String[] args) throws IOException {
 	
 		
 		int brojPodignutihKnjiga = 0;
+
 		racun = new Racun(brojRacuna, ime, brojPodignutihKnjiga);
 		
 		String fileName = "racuni.txt";
@@ -102,6 +103,23 @@ public static void main(String[] args) throws IOException {
 			bufferedWriter.close();
 		} catch (IOException ex) {
 			System.out.println("Error writing to file '" + fileName + "'");
+
+
+		try { //handle exception za negativan broj racuna
+			Racun racun = new Racun(brojRacuna, ime, brojPodignutihKnjiga);
+			
+			try { 
+				FileOutputStream in = new FileOutputStream("listaRacuna.txt");
+				ObjectOutputStream oin = new ObjectOutputStream(in);
+				oin.writeObject(racun);
+			}
+			catch(IOException ex){
+				System.out.println("Greska pri zapisivanju objekta!");
+			}
+			
+		}
+		catch (IllegalArgumentException ex){ 
+			System.out.println(ex);
 
 		}
 		
@@ -125,9 +143,14 @@ public static void main(String[] args) throws IOException {
 		
 		boolean stanjeKnjige = false;
 		
+
 		 knjiga = new Knjiga(brojKnjige, naziv, stanjeKnjige);
 		 
 		 String fileName = "knjige.txt";
+		try { // handle exception za negativan broj knjige
+			Knjiga knjiga = new Knjiga(brojKnjige, naziv, stanjeKnjige);
+			
+
 			try {
 				BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter (new File("C:/Users/medn/eclipse-workspace/BibliotekaZadaca/knjige.txt"),true));
 
