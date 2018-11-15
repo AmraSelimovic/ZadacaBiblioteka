@@ -1,14 +1,6 @@
 import java.util.ArrayList;
 
-
 public class Racun {
-
-
-public class Racun {
-
-
-public class Racun implements Serializable{
-
 	
 	private int brojRacuna;
 	private String imeMusterije;
@@ -76,50 +68,7 @@ public class Racun implements Serializable{
 	}
 
 	
-
 	// seteri
-
-	public static void posudba(int brojRacuna) {
-		for (int i = 0; i < listaRacuna.size(); i++) {
-		    if(listaRacuna.get(i).brojRacuna==brojRacuna) {
-			listaRacuna.get(i).brojPosudjenihKnjiga++;
-		    }
-		}
-	    }
-	
-	    public static void vracanje(int brojRacuna) {
-	   	for (int i = 0; i < listaRacuna.size(); i++) {
-	   	    if(listaRacuna.get(i).brojRacuna==brojRacuna) 
-	   		listaRacuna.get(i).brojPosudjenihKnjiga--;
-	   	    
-	   	    
-	   	}
-	       }
-
-		public int getBrojRacuna() {
-			return brojRacuna;
-		}
-
-		public void setBrojRacuna(int brojRacuna) {
-			this.brojRacuna = brojRacuna;
-		}
-
-		public String getImeMusterije() {
-			return imeMusterije;
-		}
-
-		public void setImeMusterije(String imeMusterije) {
-			this.imeMusterije = imeMusterije;
-		}
-
-		public int getBrojPosudjenihKnjiga() {
-			return brojPosudjenihKnjiga;
-		}
-
-		public void setBrojPosudjenihKnjiga(int brojPosudjenihKnjiga) {
-			this.brojPosudjenihKnjiga = brojPosudjenihKnjiga;
-		}
-
 	
 	public void setBrojRacuna(int brojRacuna) {
 		this.brojRacuna = brojRacuna;
@@ -135,6 +84,7 @@ public class Racun implements Serializable{
 
 
 	// ispis Racuna
+	
 	public static String ispisRacuna(int brojRacuna){
 		
 		for (int i = 0; i < listaRacuna.size(); i++)
@@ -147,7 +97,5 @@ public class Racun implements Serializable{
 		return "Unijeti broj racuna ne postoji.";
 		
 	}
-
 	
 }
-
