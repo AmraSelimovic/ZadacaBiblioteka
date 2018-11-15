@@ -10,8 +10,8 @@ public class Biblioteka {
 	
 public static void main(String[] args) throws IOException {
 		
-	Knjiga.loading();
-	Racun.loading();
+		Racun.listaRacuna = Fajl.readFromFile();
+		Knjiga.listaKnjiga = FajlKnjige.readFromF();
 		izbornik();
 	}
 	
@@ -32,7 +32,7 @@ public static void main(String[] args) throws IOException {
 		
 		do {
 			try {
-				izbor = input();
+				izbor = inputInt();
 				
 				if(izbor < 1 || izbor >7 )
 					throw new InputMismatchException();
@@ -77,14 +77,34 @@ public static void main(String[] args) throws IOException {
 		
 		System.out.println();
 		System.out.println("   DOBRODOSLI U IZBORNIK KREIRANJE RACUNA   ");
+		Racun racun = new Racun();
 		System.out.println("Unesite broj racuna: ");
-		int brojRacuna = input();
+		int brojRacuna = provjeriDaLiJeNegativan();
+		
+		while (!racun.provjeraPostojanja(brojRacuna)) {
+			System.out.println("Upisani broj racuna je zauzet. Pokusajte sa novim unosom:");
+			brojRacuna = provjeriDaLiJeNegativan();
+		}
 	
 		System.out.println("Unesite zeljeni username: ");
 		String ime = input.next();
 	
 		
 		int brojPodignutihKnjiga = 0;
+
+		racun = new Racun(brojRacuna, ime, brojPodignutihKnjiga);
+		
+		String fileName = "racuni.txt";
+		try {
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter (new File("C:/Users/medn/eclipse-workspace/BibliotekaZadaca/racuni.txt"),true));
+
+			bufferedWriter.write(racun.getBrojRacuna() + " " + racun.getImeMusterije() );
+			bufferedWriter.newLine();
+			bufferedWriter.close();
+		} catch (IOException ex) {
+			System.out.println("Error writing to file '" + fileName + "'");
+
+
 		try { //handle exception za negativan broj racuna
 			Racun racun = new Racun(brojRacuna, ime, brojPodignutihKnjiga);
 			
@@ -100,39 +120,49 @@ public static void main(String[] args) throws IOException {
 		}
 		catch (IllegalArgumentException ex){ 
 			System.out.println(ex);
+
 		}
-		
 		
 		izbornik();
 	}
 	
 	public static void kreiranjeKnjige() throws IOException {
 		System.out.println();
+		Knjiga knjiga = new Knjiga();
 		System.out.println("   DOBRODOSLI U IZBORNIK KREIRANJE KNJIGE   ");
 		System.out.println("Unesite broj knjige: ");
-		int brojKnjige = input();
+		int brojKnjige = provjeriDaLiJeNegativan();
+		
+		while (!knjiga.provjeraPostojanja(brojKnjige)) {
+			System.out.println("Upisani broj knjige je zauzet. Pokusajte sa novim unosom:");
+			brojKnjige = provjeriDaLiJeNegativan();
+		}
 		
 		System.out.println("Unesite naziv knjige: ");
 		String naziv = input.next();
 		
 		boolean stanjeKnjige = false;
 		
+
+		 knjiga = new Knjiga(brojKnjige, naziv, stanjeKnjige);
+		 
+		 String fileName = "knjige.txt";
 		try { // handle exception za negativan broj knjige
 			Knjiga knjiga = new Knjiga(brojKnjige, naziv, stanjeKnjige);
 			
+
 			try {
-				FileOutputStream in = new FileOutputStream("listaKnjiga.txt");
-				ObjectOutputStream oin = new ObjectOutputStream(in);
-				oin.writeObject(knjiga);
+				BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter (new File("C:/Users/medn/eclipse-workspace/BibliotekaZadaca/knjige.txt"),true));
+
+				bufferedWriter.write(knjiga.getBrojKnjige() + " " + naziv  );
+				bufferedWriter.newLine();
+				bufferedWriter.close();
+			} catch (IOException ex) {
+				System.out.println("Error writing to file '" + fileName + "'");
+
 			}
-			catch(IOException ex){
-				System.out.println("Greska pri zapisivanju objekta!");
-			}
-		}
-		catch (IllegalArgumentException ex) {
-			System.out.println(ex);
-		}
-		
+			
+		 
 		izbornik();
 	}
 	
@@ -141,10 +171,10 @@ public static void main(String[] args) throws IOException {
 		System.out.println();
 		System.out.println("   DOBRODOSLI U IZBORNIK PODIZANJE KNJIGE   ");
 		System.out.println("Unesite broj racuna korisnika biblioteke: ");
-		int brojRacuna = input();
+		int brojRacuna = provjeriDaLiJeNegativan();
 		
 		System.out.println("Unesite broj zeljene knjige: ");
-		int brojKnjigeZaNajam = input();
+		int brojKnjigeZaNajam = provjeriDaLiJeNegativan();
 		
 		PodizanjeKnjige podizanje = new PodizanjeKnjige(brojRacuna, brojKnjigeZaNajam);
 		
@@ -156,10 +186,10 @@ public static void main(String[] args) throws IOException {
 		System.out.println();
 		System.out.println("   DOBRODOSLI U IZBORNIK VRACANJE KNJIGE   ");
 		System.out.println("Unesite broj racuna: ");
-		int brojRacuna = input();
+		int brojRacuna = provjeriDaLiJeNegativan();
 		
 		System.out.println("Unesite broj knjige koju vracate: ");
-		int brojKnjige = input();
+		int brojKnjige = provjeriDaLiJeNegativan();
 		
 		VracanjeKnjige vracanje = new VracanjeKnjige(brojRacuna, brojKnjige);
 		
@@ -172,14 +202,22 @@ public static void main(String[] args) throws IOException {
 		System.out.println("   DOBRODOSLI U ZAPISNIK SA INFORMACIJAMA O IZNAJMLJENIM KNJIGAMA   ");
 		PodizanjeKnjige.ispisZapisnikaPodignutihKnjiga();
 		
+		if (PodizanjeKnjige.zapisnik.size() == 0) {
+			System.out.println("Zapisnik je prazan, nema podignutih knjiga!");
+		}
+		
 		izbornik();
 	}
 
 	public static void ispisZapisnikaZaVracanje () throws IOException {
 	
 		System.out.println();
-		System.out.println("   DOBRODOSLI U ZAPISNIK SA INFORMACIJAMA O IZNAJMLJENIM KNJIGAMA   ");
+		System.out.println("   DOBRODOSLI U ZAPISNIK SA INFORMACIJAMA O VRACENIM KNJIGAMA   ");
 		VracanjeKnjige.ispisZapisnikaVracenihKnjiga();
+		
+		if (VracanjeKnjige.zapisnik.size() == 0) {
+			System.out.println("Zapisnik je prazan, nema vracenih knjiga!");
+		}
 	
 		izbornik();
 	}
@@ -189,14 +227,14 @@ public static void main(String[] args) throws IOException {
 		System.out.println();
 		System.out.println("   DOBRODOSLI U IZBORNIK ZA ISPIS RACUNA   ");
 		System.out.println("Unesite broj racuna cije stanje zelite provjeriti: ");
-		int brojRacuna = input();
+		int brojRacuna = provjeriDaLiJeNegativan();
 	
 		System.out.println(Racun.ispisRacuna(brojRacuna));
 		izbornik();
 	}
 	
 	// handle exception za integer brojeve
-	public static int input() {
+	public static int inputInt() {
 		
 		int izbor=0;
 		do {
@@ -205,7 +243,7 @@ public static void main(String[] args) throws IOException {
 				 break;
 			} 
 			catch (Exception ex) {
-				System.out.println("Pogresan unos! Try again!");
+				System.out.println("Pogresan unos. Pokusajte ponovo:");
 				input.nextLine();
 			}
 			
@@ -213,6 +251,27 @@ public static void main(String[] args) throws IOException {
 		return izbor;
 	}
 	
-	
+	// handle exception za negativne integer brojeve
+	public static int provjeriDaLiJeNegativan() {
+		
+		int izbor =0;
+		
+		do {
+			try {
+				izbor = inputInt();
+				
+				if(izbor < 0)
+					throw new InputMismatchException();
+				break;
+			}
+			catch (Exception e) {
+				System.out.println("Pogresan unos. Pokusajte ponovo:");
+				input.nextLine();
+				continue;
+			}
+		} while(true);
+		return izbor;
+	}
 	
 }
+

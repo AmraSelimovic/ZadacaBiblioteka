@@ -7,7 +7,7 @@ public class VracanjeKnjige extends Knjiga{
 	private int brojKnjige;
 	private Date datum;
 	
-	private static ArrayList<VracanjeKnjige> zapisnik = new ArrayList<VracanjeKnjige>();
+	protected static ArrayList<VracanjeKnjige> zapisnik = new ArrayList<VracanjeKnjige>();
 	
 	public VracanjeKnjige() {
 		
@@ -69,7 +69,9 @@ public class VracanjeKnjige extends Knjiga{
 	public static void ispisZapisnikaVracenihKnjiga() {
 
 		System.out.println();
+	
 		for ( int i=0; i<zapisnik.size(); i++) {
+
 			System.out.println("Broj racuna korisnika koji je vratio knjigu: " 
 								+ zapisnik.get(i).brojRacuna);
 			System.out.println("Ime korisnika koji je vratio knjigu: " 
@@ -82,6 +84,8 @@ public class VracanjeKnjige extends Knjiga{
 								+ zapisnik.get(i).datum);
 			System.out.println();
 		}
+		
+	
 	}
 }
 
